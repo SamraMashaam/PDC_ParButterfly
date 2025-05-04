@@ -14,9 +14,13 @@
 #include <filesystem>
 #include <random>
 #include <ctime>
+#include <unordered_set>
+#include <metis.h>
+
 
 using namespace std;
 using namespace std::chrono;
+
 
 // Output stream for file logging
 ofstream log_file;
@@ -125,6 +129,44 @@ struct ButterflyCounts {
         global = new_global;
     }
 };
+
+//convert to CSR for METIS's sake
+void convertBipartiteToCSR(const BipartiteGraph& graph,
+                           std::vector<idx_t>& xadj,
+                           std::vector<idx_t>& adjncy,
+                           int& totalNodes)
+{
+    int uSize = graph.U.size();
+    int vSize = graph.V.size();
+    totalNodes = uSize + vSize;
+
+    // Combined adjacency list for all nodes
+    std::vector<std::unordered_set<idx_t>> adj(totalNodes);
+
+    // Populate adjacency sets with bidirectional edges
+    for (int u = 0; u < uSize; ++u) {
+        for (int v : graph.U[u]) {
+            int v_mapped = uSize + v;  // Shift v index
+            adj[u].insert(v_mapped);   // u --> v
+            adj[v_mapped].insert(u);   // v --> u
+        }
+    }
+
+    // Build CSR format arrays
+    xadj.resize(totalNodes + 1);
+    adjncy.clear();
+
+    idx_t edgeCount = 0;
+    for (int i = 0; i < totalNodes; ++i) {
+        xadj[i] = edgeCount;
+        for (idx_t neighbor : adj[i]) {
+            adjncy.push_back(neighbor);
+            edgeCount++;
+        }
+    }
+    xadj[totalNodes] = edgeCount; // Final boundary
+}
+
 
 // Read .txt file
 BipartiteGraph readTxtToGraph(const string& filepath, unordered_map<int, string>& uLabels, unordered_map<int, string>& vLabels) {
@@ -843,6 +885,43 @@ int main() {
                 log_file.close();
                 return 1;
             }
+        }
+
+        std::vector<idx_t> xadj, adjncy;
+        int totalNodes;
+        convertBipartiteToCSR(*target_graph, xadj, adjncy, totalNodes);
+
+        // Print to verify if needed
+        std::cout << "CSR format for METIS:" << std::endl;
+        for (int i = 0; i <= totalNodes; ++i) {
+            std::cout << "xadj[" << i << "] = " << xadj[i] << std::endl;
+        }
+        for (size_t i = 0; i < adjncy.size(); ++i) {
+            std::cout << "adjncy[" << i << "] = " << adjncy[i] << std::endl;
+        }
+
+        idx_t nvtxs = totalNodes; // number of vertices
+        idx_t ncon = 1;           // number of balancing constraints
+        idx_t nparts = 4;         // number of partitions you want
+
+        std::vector<idx_t> part(nvtxs); // output partition for each node
+        idx_t objval;                   // edge cut or communication volume
+
+        int status = METIS_PartGraphKway(
+            &nvtxs, &ncon, xadj.data(), adjncy.data(),
+            NULL, NULL, NULL, &nparts,
+            NULL, NULL, NULL,
+            &objval, part.data()
+        );
+
+        if (status != METIS_OK) {
+            std::cerr << "METIS partitioning failed!" << std::endl;
+            return 1;
+        }
+
+        std::cout << "METIS partitioning successful. Edge cut: " << objval << std::endl;
+        for (int i = 0; i < nvtxs; ++i) {
+            std::cout << "Node " << i << " is in partition " << part[i] << std::endl;
         }
 
         preprocess_graph(*target_graph, "degree");
