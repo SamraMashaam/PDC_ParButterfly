@@ -1,0 +1,870 @@
+Select input type:
+1. CSV file
+2. TXT file
+3. User-generated graph
+Enter choice (1-3): 
+Available TXT files:
+1. rMatGraph_J_5_100.txt
+2. rMatGraph_WJ_5_100.txt
+Enter file number (1-2): Reading graph: n=128, m=708, uSize=64, vSize=64
+Edge: u=1, v=22
+Skipping invalid edge: u=1, v=22
+Edge: u=1, v=36
+Skipping invalid edge: u=1, v=36
+Edge: u=1, v=39
+Skipping invalid edge: u=1, v=39
+Edge: u=1, v=45
+Skipping invalid edge: u=1, v=45
+Edge: u=1, v=56
+Skipping invalid edge: u=1, v=56
+Edge: u=1, v=81
+Edge: u=1, v=89
+Edge: u=1, v=106
+Edge: u=3, v=9
+Skipping invalid edge: u=3, v=9
+Edge: u=3, v=26
+Skipping invalid edge: u=3, v=26
+Edge: u=3, v=51
+Skipping invalid edge: u=3, v=51
+Edge: u=3, v=58
+Skipping invalid edge: u=3, v=58
+Edge: u=3, v=75
+Edge: u=3, v=86
+Edge: u=3, v=89
+Edge: u=3, v=101
+Edge: u=3, v=102
+Edge: u=4, v=13
+Skipping invalid edge: u=4, v=13
+Edge: u=4, v=28
+Skipping invalid edge: u=4, v=28
+Edge: u=4, v=68
+Edge: u=4, v=94
+Edge: u=4, v=110
+Edge: u=4, v=114
+Edge: u=4, v=115
+Edge: u=5, v=13
+Skipping invalid edge: u=5, v=13
+Edge: u=5, v=34
+Skipping invalid edge: u=5, v=34
+Edge: u=5, v=37
+Skipping invalid edge: u=5, v=37
+Edge: u=5, v=112
+Edge: u=7, v=14
+Skipping invalid edge: u=7, v=14
+Edge: u=7, v=16
+Skipping invalid edge: u=7, v=16
+Edge: u=7, v=29
+Skipping invalid edge: u=7, v=29
+Edge: u=7, v=85
+Edge: u=7, v=104
+Edge: u=8, v=15
+Skipping invalid edge: u=8, v=15
+Edge: u=8, v=17
+Skipping invalid edge: u=8, v=17
+Edge: u=8, v=53
+Skipping invalid edge: u=8, v=53
+Edge: u=8, v=64
+Edge: u=9, v=11
+Skipping invalid edge: u=9, v=11
+Edge: u=9, v=25
+Skipping invalid edge: u=9, v=25
+Edge: u=9, v=53
+Skipping invalid edge: u=9, v=53
+Edge: u=9, v=77
+Edge: u=9, v=82
+Edge: u=9, v=110
+Edge: u=9, v=121
+Edge: u=10, v=2
+Skipping invalid edge: u=10, v=2
+Edge: u=10, v=17
+Skipping invalid edge: u=10, v=17
+Edge: u=10, v=22
+Skipping invalid edge: u=10, v=22
+Edge: u=10, v=37
+Skipping invalid edge: u=10, v=37
+Edge: u=10, v=71
+Edge: u=10, v=79
+Edge: u=10, v=92
+Edge: u=10, v=106
+Edge: u=11, v=80
+Edge: u=12, v=8
+Skipping invalid edge: u=12, v=8
+Edge: u=12, v=26
+Skipping invalid edge: u=12, v=26
+Edge: u=12, v=32
+Skipping invalid edge: u=12, v=32
+Edge: u=12, v=51
+Skipping invalid edge: u=12, v=51
+Edge: u=12, v=57
+Skipping invalid edge: u=12, v=57
+Edge: u=12, v=82
+Edge: u=12, v=103
+Edge: u=12, v=110
+Edge: u=12, v=116
+Edge: u=12, v=118
+Edge: u=13, v=25
+Skipping invalid edge: u=13, v=25
+Edge: u=13, v=60
+Skipping invalid edge: u=13, v=60
+Edge: u=13, v=109
+Edge: u=13, v=116
+Edge: u=14, v=3
+Skipping invalid edge: u=14, v=3
+Edge: u=14, v=4
+Skipping invalid edge: u=14, v=4
+Edge: u=14, v=22
+Skipping invalid edge: u=14, v=22
+Edge: u=14, v=41
+Skipping invalid edge: u=14, v=41
+Edge: u=14, v=51
+Skipping invalid edge: u=14, v=51
+Edge: u=14, v=52
+Skipping invalid edge: u=14, v=52
+Edge: u=14, v=66
+Edge: u=14, v=68
+Edge: u=14, v=71
+Edge: u=14, v=82
+Edge: u=14, v=94
+Edge: u=14, v=110
+Edge: u=14, v=122
+Edge: u=15, v=6
+Skipping invalid edge: u=15, v=6
+Edge: u=15, v=26
+Skipping invalid edge: u=15, v=26
+Edge: u=15, v=30
+Skipping invalid edge: u=15, v=30
+Edge: u=15, v=38
+Skipping invalid edge: u=15, v=38
+Edge: u=15, v=41
+Skipping invalid edge: u=15, v=41
+Edge: u=15, v=59
+Skipping invalid edge: u=15, v=59
+Edge: u=15, v=61
+Skipping invalid edge: u=15, v=61
+Edge: u=15, v=66
+Edge: u=15, v=89
+Edge: u=15, v=94
+Edge: u=15, v=104
+Edge: u=15, v=108
+Edge: u=16, v=7
+Skipping invalid edge: u=16, v=7
+Edge: u=16, v=37
+Skipping invalid edge: u=16, v=37
+Edge: u=16, v=44
+Skipping invalid edge: u=16, v=44
+Edge: u=16, v=51
+Skipping invalid edge: u=16, v=51
+Edge: u=16, v=76
+Edge: u=16, v=98
+Edge: u=16, v=107
+Edge: u=16, v=113
+Edge: u=16, v=126
+Edge: u=17, v=6
+Skipping invalid edge: u=17, v=6
+Edge: u=17, v=32
+Skipping invalid edge: u=17, v=32
+Edge: u=17, v=52
+Skipping invalid edge: u=17, v=52
+Edge: u=17, v=58
+Skipping invalid edge: u=17, v=58
+Edge: u=17, v=88
+Edge: u=18, v=7
+Skipping invalid edge: u=18, v=7
+Edge: u=18, v=9
+Skipping invalid edge: u=18, v=9
+Edge: u=18, v=22
+Skipping invalid edge: u=18, v=22
+Edge: u=18, v=25
+Skipping invalid edge: u=18, v=25
+Edge: u=18, v=57
+Skipping invalid edge: u=18, v=57
+Edge: u=18, v=75
+Edge: u=18, v=82
+Edge: u=18, v=102
+Edge: u=18, v=109
+Edge: u=18, v=110
+Edge: u=18, v=115
+Edge: u=19, v=23
+Skipping invalid edge: u=19, v=23
+Edge: u=19, v=42
+Skipping invalid edge: u=19, v=42
+Edge: u=19, v=69
+Edge: u=19, v=76
+Edge: u=19, v=116
+Edge: u=20, v=32
+Skipping invalid edge: u=20, v=32
+Edge: u=20, v=33
+Skipping invalid edge: u=20, v=33
+Edge: u=20, v=77
+Edge: u=20, v=95
+Edge: u=20, v=116
+Edge: u=20, v=125
+Edge: u=21, v=64
+Edge: u=21, v=65
+Edge: u=21, v=113
+Edge: u=22, v=49
+Skipping invalid edge: u=22, v=49
+Edge: u=22, v=76
+Edge: u=22, v=95
+Edge: u=22, v=127
+Edge: u=23, v=0
+Skipping invalid edge: u=23, v=0
+Edge: u=23, v=9
+Skipping invalid edge: u=23, v=9
+Edge: u=23, v=13
+Skipping invalid edge: u=23, v=13
+Edge: u=23, v=17
+Skipping invalid edge: u=23, v=17
+Edge: u=23, v=35
+Skipping invalid edge: u=23, v=35
+Edge: u=23, v=51
+Skipping invalid edge: u=23, v=51
+Edge: u=23, v=108
+Edge: u=24, v=18
+Skipping invalid edge: u=24, v=18
+Edge: u=24, v=37
+Skipping invalid edge: u=24, v=37
+Edge: u=24, v=59
+Skipping invalid edge: u=24, v=59
+Edge: u=24, v=67
+Edge: u=24, v=76
+Edge: u=24, v=97
+Edge: u=24, v=107
+Edge: u=24, v=122
+Edge: u=25, v=112
+Edge: u=25, v=120
+Edge: u=26, v=8
+Skipping invalid edge: u=26, v=8
+Edge: u=26, v=12
+Skipping invalid edge: u=26, v=12
+Edge: u=26, v=17
+Skipping invalid edge: u=26, v=17
+Edge: u=26, v=55
+Skipping invalid edge: u=26, v=55
+Edge: u=26, v=83
+Edge: u=26, v=90
+Edge: u=26, v=120
+Edge: u=27, v=2
+Skipping invalid edge: u=27, v=2
+Edge: u=27, v=11
+Skipping invalid edge: u=27, v=11
+Edge: u=27, v=14
+Skipping invalid edge: u=27, v=14
+Edge: u=27, v=31
+Skipping invalid edge: u=27, v=31
+Edge: u=27, v=51
+Skipping invalid edge: u=27, v=51
+Edge: u=27, v=66
+Edge: u=27, v=70
+Edge: u=27, v=75
+Edge: u=27, v=80
+Edge: u=27, v=101
+Edge: u=27, v=108
+Edge: u=27, v=110
+Edge: u=28, v=32
+Skipping invalid edge: u=28, v=32
+Edge: u=28, v=33
+Skipping invalid edge: u=28, v=33
+Edge: u=28, v=38
+Skipping invalid edge: u=28, v=38
+Edge: u=28, v=57
+Skipping invalid edge: u=28, v=57
+Edge: u=28, v=84
+Edge: u=28, v=110
+Edge: u=28, v=115
+Edge: u=29, v=3
+Skipping invalid edge: u=29, v=3
+Edge: u=29, v=60
+Skipping invalid edge: u=29, v=60
+Edge: u=30, v=6
+Skipping invalid edge: u=30, v=6
+Edge: u=30, v=52
+Skipping invalid edge: u=30, v=52
+Edge: u=31, v=14
+Skipping invalid edge: u=31, v=14
+Edge: u=31, v=57
+Skipping invalid edge: u=31, v=57
+Edge: u=31, v=104
+Edge: u=32, v=26
+Skipping invalid edge: u=32, v=26
+Edge: u=32, v=39
+Skipping invalid edge: u=32, v=39
+Edge: u=32, v=51
+Skipping invalid edge: u=32, v=51
+Edge: u=32, v=70
+Edge: u=32, v=101
+Edge: u=33, v=11
+Skipping invalid edge: u=33, v=11
+Edge: u=33, v=16
+Skipping invalid edge: u=33, v=16
+Edge: u=33, v=19
+Skipping invalid edge: u=33, v=19
+Edge: u=33, v=27
+Skipping invalid edge: u=33, v=27
+Edge: u=33, v=51
+Skipping invalid edge: u=33, v=51
+Edge: u=33, v=57
+Skipping invalid edge: u=33, v=57
+Edge: u=33, v=116
+Edge: u=34, v=19
+Skipping invalid edge: u=34, v=19
+Edge: u=34, v=27
+Skipping invalid edge: u=34, v=27
+Edge: u=34, v=37
+Skipping invalid edge: u=34, v=37
+Edge: u=34, v=50
+Skipping invalid edge: u=34, v=50
+Edge: u=34, v=69
+Edge: u=34, v=76
+Edge: u=34, v=115
+Edge: u=34, v=116
+Edge: u=34, v=117
+Edge: u=35, v=4
+Skipping invalid edge: u=35, v=4
+Edge: u=36, v=22
+Skipping invalid edge: u=36, v=22
+Edge: u=36, v=86
+Edge: u=36, v=101
+Edge: u=36, v=102
+Edge: u=36, v=119
+Edge: u=37, v=0
+Skipping invalid edge: u=37, v=0
+Edge: u=37, v=85
+Edge: u=38, v=4
+Skipping invalid edge: u=38, v=4
+Edge: u=38, v=9
+Skipping invalid edge: u=38, v=9
+Edge: u=38, v=15
+Skipping invalid edge: u=38, v=15
+Edge: u=38, v=23
+Skipping invalid edge: u=38, v=23
+Edge: u=38, v=33
+Skipping invalid edge: u=38, v=33
+Edge: u=38, v=53
+Skipping invalid edge: u=38, v=53
+Edge: u=38, v=61
+Skipping invalid edge: u=38, v=61
+Edge: u=38, v=64
+Edge: u=38, v=107
+Edge: u=38, v=111
+Edge: u=38, v=119
+Edge: u=38, v=126
+Edge: u=39, v=14
+Skipping invalid edge: u=39, v=14
+Edge: u=39, v=27
+Skipping invalid edge: u=39, v=27
+Edge: u=39, v=70
+Edge: u=39, v=82
+Edge: u=39, v=87
+Edge: u=39, v=99
+Edge: u=40, v=0
+Skipping invalid edge: u=40, v=0
+Edge: u=40, v=31
+Skipping invalid edge: u=40, v=31
+Edge: u=40, v=51
+Skipping invalid edge: u=40, v=51
+Edge: u=40, v=54
+Skipping invalid edge: u=40, v=54
+Edge: u=40, v=56
+Skipping invalid edge: u=40, v=56
+Edge: u=40, v=75
+Edge: u=40, v=79
+Edge: u=40, v=96
+Edge: u=42, v=13
+Skipping invalid edge: u=42, v=13
+Edge: u=42, v=14
+Skipping invalid edge: u=42, v=14
+Edge: u=42, v=43
+Skipping invalid edge: u=42, v=43
+Edge: u=42, v=52
+Skipping invalid edge: u=42, v=52
+Edge: u=42, v=59
+Skipping invalid edge: u=42, v=59
+Edge: u=42, v=68
+Edge: u=42, v=72
+Edge: u=42, v=88
+Edge: u=42, v=94
+Edge: u=42, v=116
+Edge: u=42, v=122
+Edge: u=43, v=18
+Skipping invalid edge: u=43, v=18
+Edge: u=43, v=97
+Edge: u=44, v=41
+Skipping invalid edge: u=44, v=41
+Edge: u=44, v=91
+Edge: u=44, v=102
+Edge: u=44, v=112
+Edge: u=45, v=15
+Skipping invalid edge: u=45, v=15
+Edge: u=45, v=76
+Edge: u=45, v=91
+Edge: u=45, v=126
+Edge: u=46, v=0
+Skipping invalid edge: u=46, v=0
+Edge: u=46, v=84
+Edge: u=47, v=79
+Edge: u=48, v=97
+Edge: u=49, v=64
+Edge: u=49, v=85
+Edge: u=49, v=90
+Edge: u=49, v=123
+Edge: u=50, v=21
+Skipping invalid edge: u=50, v=21
+Edge: u=50, v=66
+Edge: u=50, v=84
+Edge: u=50, v=94
+Edge: u=50, v=112
+Edge: u=51, v=33
+Skipping invalid edge: u=51, v=33
+Edge: u=51, v=65
+Edge: u=51, v=110
+Edge: u=51, v=115
+Edge: u=52, v=2
+Skipping invalid edge: u=52, v=2
+Edge: u=52, v=11
+Skipping invalid edge: u=52, v=11
+Edge: u=52, v=13
+Skipping invalid edge: u=52, v=13
+Edge: u=52, v=15
+Skipping invalid edge: u=52, v=15
+Edge: u=52, v=22
+Skipping invalid edge: u=52, v=22
+Edge: u=52, v=26
+Skipping invalid edge: u=52, v=26
+Edge: u=52, v=31
+Skipping invalid edge: u=52, v=31
+Edge: u=52, v=32
+Skipping invalid edge: u=52, v=32
+Edge: u=52, v=39
+Skipping invalid edge: u=52, v=39
+Edge: u=52, v=68
+Edge: u=52, v=69
+Edge: u=52, v=71
+Edge: u=52, v=76
+Edge: u=52, v=101
+Edge: u=52, v=102
+Edge: u=52, v=108
+Edge: u=52, v=109
+Edge: u=52, v=114
+Edge: u=52, v=122
+Edge: u=53, v=13
+Skipping invalid edge: u=53, v=13
+Edge: u=53, v=16
+Skipping invalid edge: u=53, v=16
+Edge: u=53, v=29
+Skipping invalid edge: u=53, v=29
+Edge: u=53, v=41
+Skipping invalid edge: u=53, v=41
+Edge: u=53, v=59
+Skipping invalid edge: u=53, v=59
+Edge: u=53, v=78
+Edge: u=54, v=7
+Skipping invalid edge: u=54, v=7
+Edge: u=54, v=8
+Skipping invalid edge: u=54, v=8
+Edge: u=54, v=37
+Skipping invalid edge: u=54, v=37
+Edge: u=54, v=61
+Skipping invalid edge: u=54, v=61
+Edge: u=54, v=70
+Edge: u=54, v=76
+Edge: u=54, v=87
+Edge: u=54, v=97
+Edge: u=54, v=110
+Edge: u=54, v=118
+Edge: u=54, v=119
+Edge: u=54, v=122
+Edge: u=55, v=39
+Skipping invalid edge: u=55, v=39
+Edge: u=55, v=78
+Edge: u=55, v=79
+Edge: u=55, v=116
+Edge: u=56, v=25
+Skipping invalid edge: u=56, v=25
+Edge: u=56, v=116
+Edge: u=57, v=0
+Skipping invalid edge: u=57, v=0
+Edge: u=57, v=39
+Skipping invalid edge: u=57, v=39
+Edge: u=58, v=11
+Skipping invalid edge: u=58, v=11
+Edge: u=58, v=17
+Skipping invalid edge: u=58, v=17
+Edge: u=58, v=27
+Skipping invalid edge: u=58, v=27
+Edge: u=58, v=30
+Skipping invalid edge: u=58, v=30
+Edge: u=58, v=32
+Skipping invalid edge: u=58, v=32
+Edge: u=58, v=58
+Skipping invalid edge: u=58, v=58
+Edge: u=58, v=88
+Edge: u=58, v=91
+Edge: u=59, v=2
+Skipping invalid edge: u=59, v=2
+Edge: u=59, v=16
+Skipping invalid edge: u=59, v=16
+Edge: u=59, v=57
+Skipping invalid edge: u=59, v=57
+Edge: u=60, v=14
+Skipping invalid edge: u=60, v=14
+Edge: u=60, v=23
+Skipping invalid edge: u=60, v=23
+Edge: u=60, v=41
+Skipping invalid edge: u=60, v=41
+Edge: u=60, v=52
+Skipping invalid edge: u=60, v=52
+Edge: u=60, v=61
+Skipping invalid edge: u=60, v=61
+Edge: u=60, v=77
+Edge: u=60, v=91
+Edge: u=60, v=94
+Edge: u=61, v=12
+Skipping invalid edge: u=61, v=12
+Edge: u=61, v=28
+Skipping invalid edge: u=61, v=28
+Edge: u=62, v=14
+Skipping invalid edge: u=62, v=14
+Edge: u=62, v=37
+Skipping invalid edge: u=62, v=37
+Edge: u=62, v=53
+Skipping invalid edge: u=62, v=53
+Edge: u=62, v=59
+Skipping invalid edge: u=62, v=59
+Edge: u=63, v=72
+Graph: |U| = 64, |V| = 64, |E| = 173
+
+Sample edges from the graph:
+u1 --> v17
+u1 --> v25
+u1 --> v42
+u3 --> v11
+u3 --> v22
+u3 --> v25
+u3 --> v37
+u3 --> v38
+u4 --> v4
+u4 --> v30
+
+Use graph sparsification? (0 for no, 1 for yes): Preprocessing: 0.0170000 ms
+Exact Counting: 0.1350000 ms
+Approximate butterfly count (p=0.100000): 899
+Approximate Counting: 0.0310000 ms
+Exact Counting: 0.1150000 ms
+Tip Decomposition: 0.4030000 ms
+Exact Counting: 0.1040000 ms
+Wing Decomposition: 0.2930000 ms
+
+===== Results =====
+Exact global butterfly count: 57
+Per-vertex butterfly counts:
+Vertex u54: 8
+Vertex u52: 13
+Vertex u51: 3
+Vertex u50: 2
+Vertex u45: 1
+Vertex u42: 5
+Vertex u39: 1
+Vertex u38: 1
+Vertex u36: 4
+Vertex u34: 4
+Vertex u32: 1
+Vertex u12: 4
+Vertex u9: 3
+Vertex u4: 8
+Vertex u3: 6
+Vertex u14: 16
+Vertex u15: 3
+Vertex u16: 3
+Vertex u18: 9
+Vertex u19: 4
+Vertex u24: 5
+Vertex u27: 7
+Vertex u28: 3
+Per-edge butterfly counts:
+Edge (u54,v23): 1
+Edge (u55,v15): 0
+Edge (u53,v14): 0
+Edge (u52,v37): 3
+Edge (u51,v46): 3
+Edge (u49,v26): 0
+Edge (u45,v12): 1
+Edge (u49,v21): 0
+Edge (u45,v27): 0
+Edge (u50,v2): 2
+Edge (u18,v18): 3
+Edge (u40,v15): 0
+Edge (u54,v33): 2
+Edge (u18,v51): 3
+Edge (u18,v45): 1
+Edge (u34,v53): 0
+Edge (u38,v55): 0
+Edge (u17,v24): 0
+Edge (u19,v5): 3
+Edge (u16,v34): 0
+Edge (u48,v33): 0
+Edge (u16,v49): 0
+Edge (u15,v25): 0
+Edge (u16,v43): 2
+Edge (u15,v2): 3
+Edge (u19,v12): 3
+Edge (u55,v52): 0
+Edge (u15,v40): 0
+Edge (u60,v27): 0
+Edge (u58,v24): 0
+Edge (u14,v2): 3
+Edge (u60,v30): 0
+Edge (u14,v7): 2
+Edge (u24,v12): 4
+Edge (u46,v20): 0
+Edge (u14,v4): 6
+Edge (u50,v48): 0
+Edge (u14,v46): 7
+Edge (u12,v18): 3
+Edge (u22,v31): 0
+Edge (u34,v5): 3
+Edge (u4,v30): 3
+Edge (u51,v51): 3
+Edge (u1,v42): 0
+Edge (u9,v46): 3
+Edge (u12,v54): 1
+Edge (u4,v50): 1
+Edge (u44,v38): 0
+Edge (u54,v55): 0
+Edge (u4,v46): 5
+Edge (u52,v44): 1
+Edge (u16,v62): 2
+Edge (u24,v58): 3
+Edge (u51,v1): 0
+Edge (u49,v0): 0
+Edge (u47,v15): 0
+Edge (u3,v25): 0
+Edge (u10,v15): 0
+Edge (u3,v38): 4
+Edge (u23,v44): 0
+Edge (u31,v40): 0
+Edge (u14,v30): 6
+Edge (u10,v28): 0
+Edge (u3,v37): 4
+Edge (u33,v52): 0
+Edge (u63,v8): 0
+Edge (u3,v22): 2
+Edge (u58,v27): 0
+Edge (u4,v4): 4
+Edge (u15,v30): 2
+Edge (u1,v25): 0
+Edge (u3,v11): 2
+Edge (u21,v0): 0
+Edge (u56,v52): 0
+Edge (u52,v50): 1
+Edge (u12,v46): 4
+Edge (u4,v51): 3
+Edge (u14,v18): 3
+Edge (u20,v31): 0
+Edge (u13,v52): 0
+Edge (u5,v48): 0
+Edge (u55,v14): 0
+Edge (u11,v16): 0
+Edge (u39,v6): 1
+Edge (u7,v21): 0
+Edge (u9,v18): 3
+Edge (u15,v44): 1
+Edge (u13,v45): 0
+Edge (u7,v40): 0
+Edge (u16,v12): 2
+Edge (u8,v0): 0
+Edge (u36,v22): 2
+Edge (u54,v58): 4
+Edge (u12,v39): 0
+Edge (u42,v52): 0
+Edge (u18,v46): 7
+Edge (u24,v43): 1
+Edge (u9,v13): 0
+Edge (u19,v52): 2
+Edge (u9,v57): 0
+Edge (u18,v38): 2
+Edge (u10,v42): 0
+Edge (u42,v58): 3
+Edge (u1,v17): 0
+Edge (u18,v11): 2
+Edge (u10,v7): 0
+Edge (u14,v58): 5
+Edge (u28,v51): 3
+Edge (u12,v52): 0
+Edge (u52,v45): 1
+Edge (u20,v61): 0
+Edge (u36,v37): 3
+Edge (u20,v52): 0
+Edge (u50,v30): 2
+Edge (u20,v13): 0
+Edge (u22,v12): 0
+Edge (u21,v1): 0
+Edge (u27,v6): 2
+Edge (u21,v49): 0
+Edge (u22,v63): 0
+Edge (u36,v38): 3
+Edge (u40,v32): 0
+Edge (u54,v54): 1
+Edge (u24,v33): 2
+Edge (u38,v62): 1
+Edge (u24,v3): 0
+Edge (u25,v48): 0
+Edge (u25,v56): 0
+Edge (u43,v33): 0
+Edge (u52,v4): 4
+Edge (u26,v19): 0
+Edge (u54,v46): 3
+Edge (u26,v56): 0
+Edge (u32,v37): 1
+Edge (u54,v12): 3
+Edge (u26,v26): 0
+Edge (u27,v44): 2
+Edge (u49,v59): 0
+Edge (u27,v46): 3
+Edge (u27,v11): 2
+Edge (u45,v62): 1
+Edge (u27,v37): 3
+Edge (u27,v2): 2
+Edge (u27,v16): 0
+Edge (u52,v58): 5
+Edge (u28,v46): 3
+Edge (u28,v20): 0
+Edge (u52,v12): 4
+Edge (u32,v6): 1
+Edge (u34,v51): 0
+Edge (u34,v52): 2
+Edge (u36,v55): 0
+Edge (u54,v6): 2
+Edge (u52,v7): 2
+Edge (u34,v12): 3
+Edge (u42,v8): 0
+Edge (u37,v21): 0
+Edge (u52,v38): 3
+Edge (u38,v47): 0
+Edge (u60,v13): 0
+Edge (u38,v0): 0
+Edge (u38,v43): 1
+Edge (u39,v35): 0
+Edge (u39,v23): 1
+Edge (u39,v18): 0
+Edge (u52,v5): 2
+Edge (u40,v11): 0
+Edge (u42,v4): 4
+Edge (u50,v20): 0
+Edge (u42,v24): 0
+Edge (u44,v27): 0
+Edge (u42,v30): 3
+Edge (u44,v48): 0
+Tip numbers:
+Vertex u3: 3
+Vertex u4: 2
+Vertex u9: 3
+Vertex u14: 11
+Vertex u15: 3
+Vertex u16: 3
+Vertex u18: 3
+Vertex u19: 4
+Vertex u24: 5
+Vertex u27: 7
+Vertex u28: 3
+Vertex u32: 1
+Vertex u34: 4
+Vertex u36: 4
+Vertex u38: 1
+Vertex u39: 1
+Vertex u42: 5
+Vertex u45: 1
+Vertex u50: 2
+Vertex u51: 1
+Vertex u52: 11
+Vertex u54: 8
+Wing numbers:
+Edge (u42,v4): 4
+Edge (u52,v37): 3
+Edge (u42,v30): 3
+Edge (u19,v5): 3
+Edge (u19,v12): 3
+Edge (u15,v2): 3
+Edge (u14,v58): 4
+Edge (u28,v51): 2
+Edge (u51,v46): 1
+Edge (u52,v58): 5
+Edge (u28,v46): 2
+Edge (u4,v51): 3
+Edge (u4,v30): 3
+Edge (u18,v51): 2
+Edge (u54,v33): 2
+Edge (u27,v44): 2
+Edge (u27,v11): 2
+Edge (u27,v2): 2
+Edge (u16,v43): 2
+Edge (u54,v23): 1
+Edge (u24,v58): 3
+Edge (u16,v62): 2
+Edge (u52,v44): 1
+Edge (u27,v37): 3
+Edge (u45,v62): 1
+Edge (u45,v12): 1
+Edge (u39,v23): 1
+Edge (u24,v33): 2
+Edge (u54,v54): 1
+Edge (u38,v62): 1
+Edge (u38,v43): 1
+Edge (u52,v12): 4
+Edge (u32,v6): 1
+Edge (u18,v46): 4
+Edge (u24,v43): 1
+Edge (u3,v22): 2
+Edge (u24,v12): 4
+Edge (u14,v7): 2
+Edge (u4,v4): 4
+Edge (u14,v2): 3
+Edge (u12,v46): 4
+Edge (u52,v50): 1
+Edge (u4,v46): 2
+Edge (u14,v46): 4
+Edge (u27,v46): 3
+Edge (u14,v4): 4
+Edge (u12,v54): 1
+Edge (u4,v50): 1
+Edge (u34,v12): 3
+Edge (u54,v6): 2
+Edge (u52,v7): 2
+Edge (u18,v18): 3
+Edge (u50,v2): 2
+Edge (u52,v5): 2
+Edge (u52,v38): 3
+Edge (u34,v52): 2
+Edge (u18,v45): 1
+Edge (u3,v37): 4
+Edge (u54,v46): 3
+Edge (u32,v37): 1
+Edge (u54,v12): 3
+Edge (u52,v4): 4
+Edge (u3,v38): 3
+Edge (u36,v38): 2
+Edge (u34,v5): 3
+Edge (u12,v18): 3
+Edge (u27,v6): 2
+Edge (u3,v11): 2
+Edge (u36,v37): 3
+Edge (u52,v45): 1
+Edge (u14,v18): 3
+Edge (u50,v30): 2
+Edge (u54,v58): 4
+Edge (u39,v6): 1
+Edge (u42,v58): 3
+Edge (u18,v38): 2
+Edge (u14,v30): 6
+Edge (u18,v11): 2
+Edge (u19,v52): 2
+Edge (u36,v22): 2
+Edge (u16,v12): 2
+Edge (u15,v44): 1
+Edge (u9,v18): 3
+Edge (u9,v46): 3
+Edge (u51,v51): 2
+Edge (u15,v30): 2
+Exact counting time: 0.1280000 ms
+Approximate counting time: 0.0110000 ms
+Total Execution: 1829.8940000 ms
