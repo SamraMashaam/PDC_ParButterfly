@@ -17,10 +17,10 @@
 #include <unordered_set>
 #include <metis.h>
 #include <mpi.h>
+#include <omp.h>
 
 using namespace std;
 using namespace std::chrono;
-
 
 // Output stream for file logging
 ofstream log_file;
@@ -136,7 +136,7 @@ struct ButterflyCounts {
     }
 };
 
-//convert to CSR for METIS's sake
+// Convert to CSR for METIS's sake
 void convertBipartiteToCSR(const BipartiteGraph& graph,
                            std::vector<idx_t>& xadj,
                            std::vector<idx_t>& adjncy,
@@ -173,7 +173,6 @@ void convertBipartiteToCSR(const BipartiteGraph& graph,
     xadj[totalNodes] = edgeCount; // Final boundary
 }
 
-
 // Read .txt file
 BipartiteGraph readTxtToGraph(const string& filepath, unordered_map<int, string>& uLabels, unordered_map<int, string>& vLabels) {
     ifstream file(filepath);
@@ -186,7 +185,6 @@ BipartiteGraph readTxtToGraph(const string& filepath, unordered_map<int, string>
    
     // Read graph type
     if (!getline(file, line)) {
-        file.close();
         throw runtime_error("Empty file or failed to read graph type");
     }
     bool isWeighted = (line == "WeightedAdjacencyGraph");
@@ -195,15 +193,12 @@ BipartiteGraph readTxtToGraph(const string& filepath, unordered_map<int, string>
     // Read uSize and vSize
     int uSize, vSize;
     if (!(file >> uSize)) {
-        file.close();
         throw runtime_error("Failed to read uSize");
     }
     if (!(file >> vSize)) {
-        file.close();
         throw runtime_error("Failed to read vSize");
     }
     if (uSize <= 0 || vSize <= 0) {
-        file.close();
         throw runtime_error("Invalid vertex counts: uSize=" + to_string(uSize) + ", vSize=" + to_string(vSize));
     }
     getline(file, line); // Consume newline
@@ -217,7 +212,6 @@ BipartiteGraph readTxtToGraph(const string& filepath, unordered_map<int, string>
         graph.U.resize(uSize);
         graph.V.resize(vSize);
     } catch (const std::bad_alloc& e) {
-        file.close();
         throw runtime_error("Memory allocation failed for graph: " + string(e.what()));
     }
 
@@ -231,7 +225,6 @@ BipartiteGraph readTxtToGraph(const string& filepath, unordered_map<int, string>
     // Read U vertices' neighbors (0-based indices)
     for (int u = 0; u < uSize; ++u) {
         if (!getline(file, line)) {
-            file.close();
             throw runtime_error("Failed to read neighbors for u=" + to_string(u) + ": unexpected end of file");
         }
         stringstream ss(line);
@@ -241,7 +234,6 @@ BipartiteGraph readTxtToGraph(const string& filepath, unordered_map<int, string>
         log_output(oss.str());
         while (ss >> v) {
             if (v < 0 || v >= vSize) {
-                file.close();
                 throw runtime_error("Invalid V vertex index v=" + to_string(v) + " for u=" + to_string(u));
             }
             graph.addEdge(u, v);
@@ -252,7 +244,6 @@ BipartiteGraph readTxtToGraph(const string& filepath, unordered_map<int, string>
     // Read V vertices' neighbors (0-based indices)
     for (int v = 0; v < vSize; ++v) {
         if (!getline(file, line)) {
-            file.close();
             throw runtime_error("Failed to read neighbors for v=" + to_string(v) + ": unexpected end of file");
         }
         stringstream ss(line);
@@ -262,7 +253,6 @@ BipartiteGraph readTxtToGraph(const string& filepath, unordered_map<int, string>
         log_output(oss.str());
         while (ss >> u) {
             if (u < 0 || u >= uSize) {
-                file.close();
                 throw runtime_error("Invalid U vertex index u=" + to_string(u) + " for v=" + to_string(v));
             }
             graph.addEdge(u, v); // Add edge (handles duplicates safely)
@@ -501,6 +491,7 @@ void preprocess_graph(BipartiteGraph& graph, const string& ranking_method = "deg
             return graph.rank[graph.U.size() + a] > graph.rank[graph.U.size() + b];
         });
     }
+
     for (auto& neighbors : graph.V) {
         sort(neighbors.begin(), neighbors.end(), [&](int a, int b) {
             return graph.rank[a] > graph.rank[b];
@@ -508,6 +499,7 @@ void preprocess_graph(BipartiteGraph& graph, const string& ranking_method = "deg
     }
 
     // Verify sorting
+    #pragma omp parallel for
     for (size_t u = 0; u < graph.U.size(); ++u) {
         for (size_t i = 1; i < graph.U[u].size(); ++i) {
             if (graph.rank[graph.U.size() + graph.U[u][i-1]] < graph.rank[graph.U.size() + graph.U[u][i]]) {
@@ -516,6 +508,7 @@ void preprocess_graph(BipartiteGraph& graph, const string& ranking_method = "deg
             }
         }
     }
+    #pragma omp parallel for
     for (size_t v = 0; v < graph.V.size(); ++v) {
         for (size_t i = 1; i < graph.V[v].size(); ++i) {
             if (graph.rank[graph.V[v][i-1]] < graph.rank[graph.V[v][i]]) {
@@ -544,6 +537,8 @@ ButterflyCounts exact_count(BipartiteGraph& graph, const string& aggregation = "
 
     // Wedge counting between U vertices
     unordered_map<pair<int, int>, long long, PairHash> wedge_counts;
+    long long global_count = 0;
+    #pragma omp parallel for reduction(+:global_count)
     for (size_t v = 0; v < graph.V.size(); ++v) {
         const auto& neighbors = graph.V[v];
         // For each pair of U vertices connected to this V vertex
@@ -552,10 +547,15 @@ ButterflyCounts exact_count(BipartiteGraph& graph, const string& aggregation = "
                 int u1 = neighbors[i];
                 int u2 = neighbors[j];
                 if (u1 > u2) swap(u1, u2); // Ensure consistent ordering
-                wedge_counts[{u1, u2}]++;
+                #pragma omp critical
+                {
+                    wedge_counts[{u1, u2}]++;
+                }
+                global_count++;
             }
         }
     }
+    counts.global = global_count;
 
     // Convert wedge counts to butterfly counts
     counts.global = 0;
@@ -571,6 +571,7 @@ ButterflyCounts exact_count(BipartiteGraph& graph, const string& aggregation = "
 
     // Calculate per-edge counts
     counts.per_edge.clear();
+    #pragma omp parallel for
     for (size_t u = 0; u < graph.U.size(); ++u) {
         for (int v : graph.U[u]) {
             long long edge_count = 0;
@@ -583,7 +584,10 @@ ButterflyCounts exact_count(BipartiteGraph& graph, const string& aggregation = "
                     edge_count += (it->second - 1);
                 }
             }
-            counts.per_edge[{static_cast<int>(u), v}] = edge_count;
+            #pragma omp critical
+            {
+                counts.per_edge[{static_cast<int>(u), v}] = edge_count;
+            }
         }
     }
 
@@ -624,6 +628,7 @@ vector<long long> tip_decomposition(BipartiteGraph& graph, BipartiteGraph& ori) 
                 log_output("Warning: Invalid neighbor v=" + to_string(v) + " for u=" + to_string(u) + "\n");
                 continue;
             }
+            
             for (int u2 : graph.V[v]) {
                 if (u2 < 0 || u2 >= static_cast<int>(ori.U.size())) {
                     log_output("Warning: Invalid u2=" + to_string(u2) + " for v=" + to_string(v) + "\n");
@@ -805,20 +810,6 @@ void divideGraph(const BipartiteGraph& full_graph, BipartiteGraph& local_graph,
             local_vLabels[v] = full_vLabels.at(v);
         }
     }
-
-    // Debug print - show only this process's partition
-    // cout << "Process " << rank << " partition:" << endl;
-    // cout << "U vertices: ";
-    // for (size_t u = 0; u < local_graph.U.size(); ++u) {
-    //     cout << "u" << u + u_start << " ";
-    // }
-    // cout << endl << "Edges:" << endl;
-
-    // for (size_t u = 0; u < local_graph.U.size(); ++u) {
-    //     for (int v : local_graph.U[u]) {
-    //         cout << "u" << u + u_start << " --> v" << v << endl;
-    //     }
-    // }
 }
 
 // Function to combine butterfly counts
@@ -931,177 +922,173 @@ int main(int argc, char** argv) {
         string log_filename = "output_" + string(timestamp) + ".txt";
         log_file.open(log_filename);
         
-        // This reads into full_graph, uLabels, vLabels
+        if (filesystem::exists("./Data")) {
+            dataDir = "./Data";
+        } else if (filesystem::exists("../Data")) {
+            dataDir = "../Data";
+        } else {
+            log_output("Data directory not found at ./Data or ../Data.\n");
+            log_output("Enter path to Data directory (or press Enter to skip file input): ");
+            getline(cin, dataDir);
+            if (dataDir.empty() || !filesystem::exists(dataDir)) {
+                dataDir = "";
+                log_output("No valid Data directory provided. Only user-generated graphs are available.\n");
+            }
+        }
 
-
-            if (filesystem::exists("./Data")) {
-                dataDir = "./Data";
-            } else if (filesystem::exists("../Data")) {
-                dataDir = "../Data";
-            } else {
-                log_output("Data directory not found at ./Data or ../Data.\n");
-                log_output("Enter path to Data directory (or press Enter to skip file input): ");
-                getline(cin, dataDir);
-                if (dataDir.empty() || !filesystem::exists(dataDir)) {
-                    dataDir = "";
-                    log_output("No valid Data directory provided. Only user-generated graphs are available.\n");
+        log_output("Select input type:\n");
+        if (!dataDir.empty()) {
+            log_output("1. CSV file\n");
+            log_output("2. TXT file\n");
+        }
+        log_output((dataDir.empty() ? "1" : "3") + string(". User-generated graph\n"));
+        log_output("Enter choice (1-" + to_string(dataDir.empty() ? 1 : 3) + "): ");
+        int choice;
+        cin >> choice;
+        cin.ignore();
+    
+        if (!dataDir.empty() && choice == 1) {
+            vector<string> csvFiles;
+            for (const auto& entry : filesystem::directory_iterator(dataDir)) {
+                if (entry.path().extension() == ".csv") {
+                    csvFiles.push_back(entry.path().filename().string());
                 }
             }
-
-            log_output("Select input type:\n");
-            if (!dataDir.empty()) {
-                log_output("1. CSV file\n");
-                log_output("2. TXT file\n");
-            }
-            log_output((dataDir.empty() ? "1" : "3") + string(". User-generated graph\n"));
-            log_output("Enter choice (1-" + to_string(dataDir.empty() ? 1 : 3) + "): ");
-            int choice;
-            cin >> choice;
-            cin.ignore();
-        
-            if (!dataDir.empty() && choice == 1) {
-                vector<string> csvFiles;
-                for (const auto& entry : filesystem::directory_iterator(dataDir)) {
-                    if (entry.path().extension() == ".csv") {
-                        csvFiles.push_back(entry.path().filename().string());
-                    }
-                }
-                if (csvFiles.empty()) {
-                    log_output("No CSV files found in " + dataDir + ".\n");
-                    cerr << "No CSV files found in " << dataDir << ".\n";
-                    log_file.close();
-                    return 1;
-                }
-        
-                log_output("\nAvailable CSV files:\n");
-                for (size_t i = 0; i < csvFiles.size(); ++i) {
-                    log_output(to_string(i + 1) + ". " + csvFiles[i] + "\n");
-                }
-                log_output("Enter file number (1-" + to_string(csvFiles.size()) + "): ");
-                size_t fileChoice;
-                cin >> fileChoice;
-                if (fileChoice < 1 || fileChoice > csvFiles.size()) {
-                    log_output("Invalid file choice.\n");
-                    cerr << "Invalid file choice.\n";
-                    log_file.close();
-                    return 1;
-                }
-        
-                string filepath = dataDir + "/" + csvFiles[fileChoice - 1];
-                string colU, colV;
-                if (csvFiles[fileChoice - 1] == "edges.csv") {
-                    colU = "hero";
-                    colV = "comic";
-                } else if (csvFiles[fileChoice - 1] == "devs.csv") {
-                    colU = "author_id";
-                    colV = "project_id";
-                } else if (csvFiles[fileChoice - 1] == "moderators.csv") {
-                    colU = "moderator";
-                    colV = "subreddit";
-                } else {
-                    log_output("Enter U column name: ");
-                    cin >> colU;
-                    log_output("Enter V column name: ");
-                    cin >> colV;
-                }
-        
-                try {
-                    full_graph = readGraph(filepath, colU, colV, uLabels, vLabels);
-                } catch (const exception& e) {
-                    log_output("Error reading CSV: " + string(e.what()) + "\n");
-                    cerr << "Error reading CSV: " << e.what() << "\n";
-                    log_file.close();
-                    return 1;
-                }
-            } else if (!dataDir.empty() && choice == 2) {
-                vector<string> txtFiles;
-                for (const auto& entry : filesystem::directory_iterator(dataDir)) {
-                    if (entry.path().extension() == ".txt") {
-                        txtFiles.push_back(entry.path().filename().string());
-                    }
-                }
-                if (txtFiles.empty()) {
-                    log_output("No TXT files found in " + dataDir + ".\n");
-                    cerr << "No TXT files found in " << dataDir << ".\n";
-                    log_file.close();
-                    return 1;
-                }
-        
-                log_output("\nAvailable TXT files:\n");
-                for (size_t i = 0; i < txtFiles.size(); ++i) {
-                    log_output(to_string(i + 1) + ". " + txtFiles[i] + "\n");
-                }
-                log_output("Enter file number (1-" + to_string(txtFiles.size()) + "): ");
-                size_t fileChoice;
-                cin >> fileChoice;
-                if (fileChoice < 1 || fileChoice > txtFiles.size()) {
-                    log_output("Invalid file choice.\n");
-                    cerr << "Invalid file choice.\n";
-                    log_file.close();
-                    return 1;
-                }
-        
-                string filepath = dataDir + "/" + txtFiles[fileChoice - 1];
-                try {
-                    full_graph = readGraph(filepath, "", "", uLabels, vLabels);
-                } catch (const exception& e) {
-                    log_output("Error reading TXT: " + string(e.what()) + "\n");
-                    cerr << "Error reading TXT: " << e.what() << "\n";
-                    log_file.close();
-                    return 1;
-                }
-            } else if (dataDir.empty() ? (choice == 1) : (choice == 3)) {
-                try {
-                    full_graph = createUserGraph(uLabels, vLabels);
-                } catch (const exception& e) {
-                    log_output("Error creating user graph: " + string(e.what()) + "\n");
-                    cerr << "Error creating user graph: " << e.what() << "\n";
-                    log_file.close();
-                    return 1;
-                }
-            } else {
-                log_output("Invalid input type.\n");
-                cerr << "Invalid input type.\n";
+            if (csvFiles.empty()) {
+                log_output("No CSV files found in " + dataDir + ".\n");
+                cerr << "No CSV files found in " << dataDir << ".\n";
                 log_file.close();
                 return 1;
             }
-        
-
-            ostringstream oss;
-            oss << "Graph: |U| = " << full_graph.U.size() << ", |V| = " << full_graph.V.size() << ", |E| = " << full_graph.edgeCount() << "\n";
-            log_output(oss.str());
-
-            {
-                Timer total_timer("Total Execution");
-
-                log_output("\nSample edges from the graph:\n");
-                printGraphSample(full_graph, uLabels, vLabels);
-
-                log_output("\nUse graph sparsification? (0 for no, 1 for yes): ");
-                int use_sparsification;
-                cin >> use_sparsification;
-                BipartiteGraph* target_graph = &full_graph;
-                BipartiteGraph sparse_graph;
-                double sparsification_p = 1.0;
-
-                if (use_sparsification) {
-                    log_output("Enter sampling probability (0 to 1, e.g., 0.1): ");
-                    cin >> sparsification_p;
-                    try {
-                        sparse_graph = sparsifyGraph(full_graph, sparsification_p, uLabels, vLabels);
-                        target_graph = &sparse_graph;
-                    } catch (const exception& e) {
-                        log_output("Error in sparsification: " + string(e.what()) + "\n");
-                        cerr << "Error in sparsification: " << e.what() << "\n";
-                        log_file.close();
-                        return 1;
-                    }
-                    full_graph = *target_graph;
-                }
-
+    
+            log_output("\nAvailable CSV files:\n");
+            for (size_t i = 0; i < csvFiles.size(); ++i) {
+                log_output(to_string(i + 1) + ". " + csvFiles[i] + "\n");
             }
-            cout<<"Starting processing..."<<endl;
+            log_output("Enter file number (1-" + to_string(csvFiles.size()) + "): ");
+            size_t fileChoice;
+            cin >> fileChoice;
+            if (fileChoice < 1 || fileChoice > csvFiles.size()) {
+                log_output("Invalid file choice.\n");
+                cerr << "Invalid file choice.\n";
+                log_file.close();
+                return 1;
+            }
+    
+            string filepath = dataDir + "/" + csvFiles[fileChoice - 1];
+            string colU, colV;
+            if (csvFiles[fileChoice - 1] == "edges.csv") {
+                colU = "hero";
+                colV = "comic";
+            } else if (csvFiles[fileChoice - 1] == "devs.csv") {
+                colU = "author_id";
+                colV = "project_id";
+            } else if (csvFiles[fileChoice - 1] == "moderators.csv") {
+                colU = "moderator";
+                colV = "subreddit";
+            } else {
+                log_output("Enter U column name: ");
+                cin >> colU;
+                log_output("Enter V column name: ");
+                cin >> colV;
+            }
+    
+            try {
+                full_graph = readGraph(filepath, colU, colV, uLabels, vLabels);
+            } catch (const exception& e) {
+                log_output("Error reading CSV: " + string(e.what()) + "\n");
+                cerr << "Error reading CSV: " << e.what() << "\n";
+                log_file.close();
+                return 1;
+            }
+        } else if (!dataDir.empty() && choice == 2) {
+            vector<string> txtFiles;
+            for (const auto& entry : filesystem::directory_iterator(dataDir)) {
+                if (entry.path().extension() == ".txt") {
+                    txtFiles.push_back(entry.path().filename().string());
+                }
+            }
+            if (txtFiles.empty()) {
+                log_output("No TXT files found in " + dataDir + ".\n");
+                cerr << "No TXT files found in " << dataDir << ".\n";
+                log_file.close();
+                return 1;
+            }
+    
+            log_output("\nAvailable TXT files:\n");
+            for (size_t i = 0; i < txtFiles.size(); ++i) {
+                log_output(to_string(i + 1) + ". " + txtFiles[i] + "\n");
+            }
+            log_output("Enter file number (1-" + to_string(txtFiles.size()) + "): ");
+            size_t fileChoice;
+            cin >> fileChoice;
+            if (fileChoice < 1 || fileChoice > txtFiles.size()) {
+                log_output("Invalid file choice.\n");
+                cerr << "Invalid file choice.\n";
+                log_file.close();
+                return 1;
+            }
+    
+            string filepath = dataDir + "/" + txtFiles[fileChoice - 1];
+            try {
+                full_graph = readGraph(filepath, "", "", uLabels, vLabels);
+            } catch (const exception& e) {
+                log_output("Error reading TXT: " + string(e.what()) + "\n");
+                cerr << "Error reading TXT: " << e.what() << "\n";
+                log_file.close();
+                return 1;
+            }
+        } else if (dataDir.empty() ? (choice == 1) : (choice == 3)) {
+            try {
+                full_graph = createUserGraph(uLabels, vLabels);
+            } catch (const exception& e) {
+                log_output("Error creating user graph: " + string(e.what()) + "\n");
+                cerr << "Error creating user graph: " << e.what() << "\n";
+                log_file.close();
+                return 1;
+            }
+        } else {
+            log_output("Invalid input type.\n");
+            cerr << "Invalid input type.\n";
+            log_file.close();
+            return 1;
         }
+    
+
+        ostringstream oss;
+        oss << "Graph: |U| = " << full_graph.U.size() << ", |V| = " << full_graph.V.size() << ", |E| = " << full_graph.edgeCount() << "\n";
+        log_output(oss.str());
+
+        {
+            Timer total_timer("Total Execution");
+
+            log_output("\nSample edges from the graph:\n");
+            printGraphSample(full_graph, uLabels, vLabels);
+
+            log_output("\nUse graph sparsification? (0 for no, 1 for yes): ");
+            int use_sparsification;
+            cin >> use_sparsification;
+            BipartiteGraph* target_graph = &full_graph;
+            BipartiteGraph sparse_graph;
+            double sparsification_p = 1.0;
+
+            if (use_sparsification) {
+                log_output("Enter sampling probability (0 to 1, e.g., 0.1): ");
+                cin >> sparsification_p;
+                try {
+                    sparse_graph = sparsifyGraph(full_graph, sparsification_p, uLabels, vLabels);
+                    target_graph = &sparse_graph;
+                } catch (const exception& e) {
+                    log_output("Error in sparsification: " + string(e.what()) + "\n");
+                    cerr << "Error in sparsification: " << e.what() << "\n";
+                    log_file.close();
+                    return 1;
+                }
+                full_graph = *target_graph;
+            }
+        }
+        cout<<"Starting processing..."<<endl;
+    }
 
     MPI_Barrier(MPI_COMM_WORLD);
     // Broadcast the graph to all processes
@@ -1143,7 +1130,7 @@ int main(int argc, char** argv) {
     auto safe_label = [&](int id, bool is_u) -> string {
         try {
             return is_u ? local_uLabels.at(id) 
-                    : local_vLabels.at(id - local_graph.U.size());
+                        : local_vLabels.at(id - static_cast<int>(local_graph.U.size()));
         } catch (const out_of_range&) {
             return to_string(id);  // Fallback to numeric ID
         }
@@ -1204,7 +1191,7 @@ int main(int argc, char** argv) {
             int vertex_count = 0;
             for (const auto& [u, cnt] : local_exact_counts.per_vertex) {
                 if (cnt > 0 && vertex_count++ < 10) {
-                    oss << "Vertex " << safe_label(u, u < local_graph.U.size())
+                    oss << "Vertex " << safe_label(u, u < static_cast<int>(local_graph.U.size()))
                         << ": " << cnt << "\n";
                 }
             }
@@ -1242,10 +1229,12 @@ int main(int argc, char** argv) {
         log_file.close();
     }
 
-    // Finalize MPI
     MPI_Finalize();
     if (rank == 0) {
-        cout << "Program completed successfully.\n";
+        auto program_end = high_resolution_clock::now();
+        auto total_duration = duration_cast<milliseconds>(program_end - program_start).count();
+        cout << "Total program execution time: " << total_duration << " ms\n";
     }
+
     return 0;
 }
