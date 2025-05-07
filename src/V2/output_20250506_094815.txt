@@ -1,5 +1,0 @@
-Select input type:
-1. CSV file
-2. TXT file
-3. User-generated graph
-Enter choice (1-3): Enter number of U vertices: Enter number of V vertices: Enter number of edges (max 0): Error creating user graph: Vertex counts must be positive
