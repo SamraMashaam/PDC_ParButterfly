@@ -2,7 +2,7 @@
 
 CXX = mpic++
 CXXFLAGS = -std=c++17 -O3 -Wall
-NUM_PROCESSES = 4
+NUM_PROCESSES = 8
 SPARSIFICATION_P = 1.0
 DATASET = ../Data/rMatGraph_J_5_100.txt
 LOG_DIR = logs
